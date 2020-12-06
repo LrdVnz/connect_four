@@ -223,7 +223,7 @@ describe Game do
 
       context 'when board is full' do
         it 'makes winner true' do
-          game_board_full.board.map! { |row| row.map { |element| element = '⚪' } }
+          game_board_full.board.map! { |row| row.map { |_element| element = '⚪' } }
           full_message = 'board is full'
           expect(game_board_full).to receive(:puts).with(full_message)
           game_board_full.board_full?
