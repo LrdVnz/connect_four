@@ -14,17 +14,17 @@ class Game
   end
 
   def startgame
-    puts 'Welcome to Connect Four !'.red 
+    puts 'Welcome to Connect Four !'.red
     puts 'This is your board.'
     showboard
     choose_sign
-    loop do 
+    loop do
       put_sign(p1sign)
       has_won?
-      if @winner == true  
+      if @winner == true
         showboard
         puts "#{winner_token} WINS!" unless @winner_token.nil?
-         return
+        return
       end
       showboard
       put_sign(p2sign)
@@ -32,7 +32,7 @@ class Game
       if @winner == true
         showboard
         puts "#{winner_token} WINS!" unless @winner_token.nil?
-         return
+        return
       end
       showboard
     end
@@ -70,8 +70,10 @@ class Game
   def verify_put_choice
     loop do
       choice = gets.chomp
-      next unless choice.match(/[0-6]/)
-
+      unless choice.match(/[0-6]/)
+        puts 'choose a number between 0 and 6'
+        next
+      end
       num = choice.to_i
       if @board.all? { |row| row[num] != '  ' }
         puts 'Input Error! The chosen column is already occupied. Please choose another one'
@@ -102,13 +104,13 @@ class Game
       i = 0
       while i < @board[index].length
         if @board[index][i] == '⚪'
-          if control_1a(index, i) == true 
+          if control_1a(index, i) == true
             @winner_token = '⚪'
             return @winner = true
           end
         end
         if @board[index][i] == '⚫'
-           if control_1b(index, i) == true 
+          if control_1b(index, i) == true
             @winner_token = '⚫'
             return @winner = true
           end
@@ -120,25 +122,13 @@ class Game
 
   def control_1a(index, i)
     if @board[index][i + 1] != nil && @board[index][i + 2] != nil && @board[index][i + 3] != nil
-      puts "control_1a"
-       ccc = @board[index][i + 1] == '⚪' && @board[index][i + 2] == '⚪' && @board[index][i + 3] == '⚪'
-       puts " boardu indexu plus aun #{@board[index][i + 1]} "
-       puts " boardu indexu plus tuuu #{@board[index][i + 2]} "
-       puts " boardu indexu plus treeen #{@board[index][i + 1]} "
-      puts "ccc #{ccc}"
-      return ccc
-      end
+      @board[index][i + 1] == '⚪' && @board[index][i + 2] == '⚪' && @board[index][i + 3] == '⚪'
+    end
   end
 
   def control_1b(index, i)
     if @board[index][i + 1] != nil && @board[index][i + 2] != nil && @board[index][i + 3] != nil
-       puts "control_1b" 
-     ccc =  @board[index][i + 1] == '⚫' && @board[index][i + 2] == '⚫' && @board[index][i + 3] == '⚫'
-     puts " boardu indexu plus aun #{@board[index][i + 1]} "
-     puts " boardu indexu plus tuuu #{@board[index][i + 2]} "
-     puts " boardu indexu plus treeen #{@board[index][i + 1]} " 
-     puts "ccc #{ccc}"
-      return ccc
+      @board[index][i + 1] == '⚫' && @board[index][i + 2] == '⚫' && @board[index][i + 3] == '⚫'
     end
   end
 
@@ -147,7 +137,7 @@ class Game
       i = 0
       while i < @board[index].length
         if @board[index][i] == '⚪'
-          if control_2a(index, i) == true 
+          if control_2a(index, i) == true
             @winner_token = '⚪'
             return @winner = true
           end
@@ -164,27 +154,19 @@ class Game
   end
 
   def control_2a(index, i)
-    if @board[index + 1] != nil && @board[index + 2] != nil && @board[index + 3]!= nil
-      puts "control_2a first"
+    if @board[index + 1] != nil && @board[index + 2] != nil && @board[index + 3] != nil
       if @board[index + 1][i] != nil && @board[index + 2][i] != nil && @board[index + 3][i] != nil
-        puts "control_2a second"
-        ccc = @board[index + 1][i] == '⚪' && @board[index + 2][i] == '⚪' && @board[index + 3][i] == '⚪'
-        puts "ccc #{ccc}"
-        return ccc
+        @board[index + 1][i] == '⚪' && @board[index + 2][i] == '⚪' && @board[index + 3][i] == '⚪'
       end
     end
   end
 
   def control_2b(index, i)
-    if @board[index + 1] != nil && @board[index + 2] != nil && @board[index + 3]!= nil
-      puts "control 2b first"
-     if @board[index + 1][i] != nil && @board[index + 2][i] != nil && @board[index + 3][i] != nil
-       puts "control 2b second" 
-       ccc = @board[index + 1][i] == '⚫' && @board[index + 2][i] == '⚫' && @board[index + 3][i] == '⚫'
-        puts "ccc #{ccc}"
-        return ccc
-     end
-   end
+    if @board[index + 1] != nil && @board[index + 2] != nil && @board[index + 3] != nil
+      if @board[index + 1][i] != nil && @board[index + 2][i] != nil && @board[index + 3][i] != nil
+        @board[index + 1][i] == '⚫' && @board[index + 2][i] == '⚫' && @board[index + 3][i] == '⚫'
+      end
+    end
   end
 
   def check_diagonal_right
@@ -210,9 +192,7 @@ class Game
 
   def control_3a(index, i)
     if @board[index - 1] != nil && @board[index - 2] != nil && @board[index - 3] != nil
-      puts "control 3a first"
       if @board[index - 1][i - 1] != nil && @board[index - 2][i - 2] != nil && @board[index - 3][i - 3] != nil
-        puts "control 3a second" 
         @board[index - 1][i - 1] == '⚪' && @board[index - 2][i - 2] == '⚪' && @board[index - 3][i - 3] == '⚪'
       end
     end
@@ -220,12 +200,8 @@ class Game
 
   def control_3b(index, i)
     if @board[index - 1] != nil && @board[index - 2] != nil && @board[index - 3] != nil
-      puts "control 3b first"
       if @board[index - 1][i - 1] != nil && @board[index - 2][i - 2] != nil && @board[index - 3][i - 3] != nil
-        puts "control 3b second"
-        ccc = @board[index - 1][i - 1] == '⚫' && @board[index - 2][i - 2] == '⚫' && @board[index - 3][i - 3] == '⚫'
-        puts "ccc #{ccc}"
-        return ccc
+        @board[index - 1][i - 1] == '⚫' && @board[index - 2][i - 2] == '⚫' && @board[index - 3][i - 3] == '⚫'
       end
     end
   end
@@ -253,26 +229,18 @@ class Game
 
   def control_4a(index, i)
     if @board[index - 1] != nil && @board[index - 2] != nil && @board[index - 3] != nil
-      puts "control 4a first"
       if @board[index - 1][i + 1] != nil && @board[index - 2][i + 2] != nil && @board[index - 3][i + 3] != nil
-        puts "control 4a second" 
         ccc = @board[index - 1][i + 1] == '⚪' && @board[index - 2][i + 2] == '⚪' && @board[index - 3][i + 3] == '⚪'
-        puts "ccc #{ccc}"
-        return ccc
       end
     end
   end
 
   def control_4b(index, i)
     if @board[index - 1] != nil && @board[index - 2] != nil && @board[index - 3] != nil
-      puts "control 4b first"
       if @board[index - 1][i + 1] != nil && @board[index - 2][i + 2] != nil && @board[index - 3][i + 3] != nil
-        puts "control 4b second" 
-        ccc = @board[index - 1][i + 1] == '⚫' && @board[index - 2][i + 2] == '⚫' && @board[index - 3][i + 3] == '⚫'
-        puts "ccc #{ccc}"
-        return ccc
-     end
-   end
+        @board[index - 1][i + 1] == '⚫' && @board[index - 2][i + 2] == '⚫' && @board[index - 3][i + 3] == '⚫'
+      end
+    end
   end
 
   def showboard
