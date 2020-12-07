@@ -111,7 +111,9 @@ class Board
   end
 
   def showboard
-    puts '--------------------'
+    puts '-----------------------------------------'
+    puts "  0     1     2     3     4      5     6 "
+      #  ["  ", "  ", "  ", "  ", "  ", "  ", "  "]
     board.each { |row| puts "#{row} \n" }
   end
 end
