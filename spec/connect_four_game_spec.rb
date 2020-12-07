@@ -2,6 +2,7 @@
 
 require './lib/game'
 
+#comment out "Game.new.startgame" at the end of the game.rb file to automate tests
 describe Game do
   describe '#initialize' do
     subject(:game_new) { described_class.new }
@@ -70,6 +71,7 @@ describe Game do
     context 'when input is 2' do
       it 'makes p1sign ⚪' do
         input = 2
+        allow(game_choose_sign).to receive(:puts)
         allow(game_choose_sign).to receive(:verify_sign_input).and_return(input)
         game_choose_sign.choose_sign
         expect(game_choose_sign.p1sign).to eq('⚪')
@@ -77,6 +79,7 @@ describe Game do
 
       it 'makes p2sign ⚫ ' do
         input = 2
+        allow(game_choose_sign).to receive(:puts)
         allow(game_choose_sign).to receive(:verify_sign_input).and_return(input)
         game_choose_sign.choose_sign
         expect(game_choose_sign.p2sign).to eq('⚫')
@@ -86,6 +89,7 @@ describe Game do
     context 'when input is 1' do
       it 'makes p1sign ⚫' do
         input = 1
+        allow(game_choose_sign).to receive(:puts)
         allow(game_choose_sign).to receive(:verify_sign_input).and_return(input)
         game_choose_sign.choose_sign
         expect(game_choose_sign.p1sign).to eq('⚫')
@@ -93,6 +97,7 @@ describe Game do
 
       it 'makes p2sign ⚪' do
         input = 1
+        allow(game_choose_sign).to receive(:puts)
         allow(game_choose_sign).to receive(:verify_sign_input).and_return(input)
         game_choose_sign.choose_sign
         expect(game_choose_sign.p2sign).to eq('⚪')
@@ -225,7 +230,7 @@ describe Game do
 
       context 'when board is full' do
         it 'makes winner true' do
-          game_board_full.board.map! { |row| row.map { |_element| element = '⚪' } }
+          game_board_full.board.map! { |row| row.map { |element| element = '⚪' } }
           full_message = 'board is full'
           expect(game_board_full).to receive(:puts).with(full_message)
           game_board_full.board_full?

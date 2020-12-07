@@ -3,11 +3,13 @@
 require_relative 'board'
 require 'colorize'
 
+# main Game class, for starting the game, looping etc
 class Game < Board
-  attr_accessor :winner, :board, :winner_token
+  attr_accessor :winner, :board, :winner_token, :tokens
   attr_reader :p1sign, :p2sign
 
   def initialize
+    super
     @winner = false
     @winner_token = nil
     @board = Board.new.board
@@ -49,7 +51,7 @@ class Game < Board
   end
 
   def choose_sign
-    tokens = { '' => '', 'black' => '⚫', 'white' => '⚪' }
+    @tokens = { '' => '', 'black' => '⚫', 'white' => '⚪' }
     puts "put 1 for #{tokens['black']}, 2 for #{tokens['white']}"
     input = verify_sign_input
     assign_token(input, tokens)
@@ -107,4 +109,4 @@ class Game < Board
   end
 end
 
-# Game.new.startgame
+Game.new.startgame

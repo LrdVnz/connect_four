@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Board class for creating, checking combos
 class Board
   attr_accessor :board
 
@@ -22,86 +23,91 @@ class Board
 
   def check_horizontal_win
     @board.each_index do |index|
-      i = 0
-      while i < @board[index].length
-        current = board[index][i]
-        last = board[index][i + 3] unless board[index][i + 3].nil?
+      num = 0
+      while num < @board[index].length
+        current = board[index][num]
+        last = board[index][num + 3]
         # frozen_string_literal: true
-        if last && check_horizontal_line(current, index, i) && check_current(current)
-          @winner_token = current
-          @winner = true
-        end
-        i += 1
+        return assign_winner(current) if last && check_horizontal_line(current, index, num) && check_current(current)
+
+        num += 1
       end
     end
   end
 
-  def check_horizontal_line(current, index, i)
-    @board[index][i + 1] == current && @board[index][i + 2] == current && @board[index][i + 3] == current
+  def check_horizontal_line(current, index, num)
+    @board[index][num + 1] == current &&
+      @board[index][num + 2] == current &&
+      @board[index][num + 3] == current
   end
 
   def check_vertical_win
     @board.each_index do |index|
-      i = 0
-      while i < @board[index].length
-        current = board[index][i]
-        last = board[index + 3] unless board[index + 3].nil?
+      num = 0
+      while num < @board[index].length
+        current = board[index][num]
+        last = board[index + 3]
         # frozen_string_literal: true
-        if last && check_vertical_line(current, index, i) && check_current(current)
-          @winner_token = current
-          @winner = true
-        end
-        i += 1
+        return assign_winner(current) if last && check_vertical_line(current, index, num) && check_current(current)
+
+        num += 1
       end
     end
   end
 
-  def check_vertical_line(current, index, i)
-    @board[index + 1][i] == current && @board[index + 2][i] == current && @board[index + 3][i] == current
+  def check_vertical_line(current, index, num)
+    @board[index + 1][num] == current &&
+      @board[index + 2][num] == current &&
+      @board[index + 3][num] == current
   end
 
   def check_diagonal_right
     @board.each_index do |index|
-      i = 0
-      while i < @board[index].length
-        current = board[index][i]
-        last = board[index - 3][i - 3] unless board[index - 3][i - 3].nil?
+      num = 0
+      while num < @board[index].length
+        current = board[index][num]
+        last = board[index - 3][num - 3]
         # frozen_string_literal: true
-        if last && check_diagonal_right_line(current, index, i) && check_current(current)
-          @winner_token = current
-          @winner = true
-        end
-        i += 1
+        return assign_winner(current) if last && check_diag_right_line(current, index, num) && check_current(current)
+
+        num += 1
       end
     end
   end
 
-  def check_diagonal_right_line(current, index, i)
-    @board[index - 1][i - 1] == current && @board[index - 2][i - 2] == current && @board[index - 3][i - 3] == current
+  def check_diag_right_line(current, index, num)
+    @board[index - 1][num - 1] == current &&
+      @board[index - 2][num - 2] == current &&
+      @board[index - 3][num - 3] == current
   end
 
   def check_diagonal_left
     @board.each_index do |index|
-      i = 0
-      while i < @board[index].length
-        current = board[index][i]
-        last = @board[index - 3][i + 3] unless @board[index - 3][i + 3].nil?
+      num = 0
+      while num < @board[index].length
+        current = board[index][num]
+        last = @board[index - 3][num + 3]
         # frozen_string_literal: true
-        if last && check_diagonal_left_line(current, index, i) && check_current(current)
-          @winner_token = current
-          @winner = true
-        end
-        i += 1
+        return assign_winner(current) if last && check_diag_left_line(current, index, num) && check_current(current)
+
+        num += 1
       end
     end
   end
 
-  def check_diagonal_left_line(current, index, i)
-    @board[index - 1][i + 1] == current && @board[index - 2][i + 2] == current && @board[index - 3][i + 3] == current
+  def check_diag_left_line(current, index, num)
+    @board[index - 1][num + 1] == current &&
+      @board[index - 2][num + 2] == current &&
+      @board[index - 3][num + 3] == current
   end
 
   def check_current(current)
     !current.nil? && current != '  '
+  end
+
+  def assign_winner(current)
+    @winner_token = current
+    @winner = true
   end
 
   def showboard
