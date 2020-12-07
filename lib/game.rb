@@ -14,8 +14,8 @@ class Game < Board
   end
 
   def startgame
-    puts 'Welcome to Connect Four !'.red
-    puts 'This is your board.'.blue
+    puts 'Welcome to Connect Four !'
+    puts 'This is your board.'
     showboard
     choose_sign
     game_loop
@@ -33,13 +33,13 @@ class Game < Board
 
   def call_p1put
     put_sign(p1sign)
-    has_won?
+    won?
     showboard
   end
 
   def call_p2put
     put_sign(p2sign)
-    has_won?
+    won?
     showboard
   end
 
@@ -65,8 +65,12 @@ class Game < Board
   end
 
   def verify_sign_input
-    input = gets.chomp
-    return input.to_i if input.match(/1|2/)
+    loop do
+      input = gets.chomp
+      return input.to_i if input.match(/1|2/)
+
+      puts "put 1 for #{tokens['black']}, 2 for #{tokens['white']}"
+    end
   end
 
   def put_sign(sign)
@@ -75,7 +79,7 @@ class Game < Board
     @board.reverse.each do |row|
       if row[column_choice] == '  '
         row[column_choice] = sign
-        return
+        break
       end
     end
   end
@@ -88,15 +92,13 @@ class Game < Board
         next
       end
       num = choice.to_i
-      if @board.all? { |row| row[num] != '  ' }
-        puts 'Input Error! The chosen column is already occupied. Please choose another one'
-      else
-        return num
-      end
+      return num unless @board.all? { |row| row[num] != '  ' }
+
+      puts 'Input Error! The chosen column is already occupied. Please choose another one'
     end
   end
 
-  def has_won?
+  def won?
     board_full?
     check_horizontal_win
     check_vertical_win
@@ -105,4 +107,4 @@ class Game < Board
   end
 end
 
-Game.new.startgame
+# Game.new.startgame

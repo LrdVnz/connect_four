@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'board_checkers'
-
 class Board
-  include BoardCheckers
   attr_accessor :board
 
   def initialize
@@ -17,102 +14,98 @@ class Board
   end
 
   def board_full?
-    if board.all? { |row| row.all? { |item| item != '  ' } }
-      puts 'board is full'
-      @winner = true
-      nil
-    end
+    return unless board.all? { |row| row.all? { |item| item != '  ' } }
+
+    puts 'board is full'
+    @winner = true
   end
 
   def check_horizontal_win
     @board.each_index do |index|
       i = 0
       while i < @board[index].length
-        if @board[index][i] == '⚪'
-          if control_horizontal_white(index, i) == true
-            @winner_token = '⚪'
-            return @winner = true
-          end
-        end
-        if @board[index][i] == '⚫'
-          current_sign
-          if control_horizontal_black(index, i) == true
-            @winner_token = '⚫'
-            return @winner = true
-          end
+        current = board[index][i]
+        last = board[index][i + 3] unless board[index][i + 3].nil?
+        # frozen_string_literal: true
+        if last && check_horizontal_line(current, index, i) && check_current(current)
+          @winner_token = current
+          @winner = true
         end
         i += 1
       end
     end
+  end
+
+  def check_horizontal_line(current, index, i)
+    @board[index][i + 1] == current && @board[index][i + 2] == current && @board[index][i + 3] == current
   end
 
   def check_vertical_win
     @board.each_index do |index|
       i = 0
       while i < @board[index].length
-        if @board[index][i] == '⚪'
-          if control_vertical_white(index, i) == true
-            @winner_token = '⚪'
-            return @winner = true
-          end
-        end
-        if @board[index][i] == '⚫'
-          if control_vertical_black(index, i) == true
-            @winner_token = '⚫'
-            return @winner = true
-          end
+        current = board[index][i]
+        last = board[index + 3] unless board[index + 3].nil?
+        # frozen_string_literal: true
+        if last && check_vertical_line(current, index, i) && check_current(current)
+          @winner_token = current
+          @winner = true
         end
         i += 1
       end
     end
+  end
+
+  def check_vertical_line(current, index, i)
+    @board[index + 1][i] == current && @board[index + 2][i] == current && @board[index + 3][i] == current
   end
 
   def check_diagonal_right
     @board.each_index do |index|
       i = 0
       while i < @board[index].length
-        if @board[index][i] == '⚪'
-          if control_diag_right_white(index, i) == true
-            @winner_token = '⚪'
-            return @winner = true
-          end
-        end
-        if @board[index][i] == '⚫'
-          if control_diag_right_black(index, i) == true
-            @winner_token = '⚫'
-            return @winner = true
-          end
+        current = board[index][i]
+        last = board[index - 3][i - 3] unless board[index - 3][i - 3].nil?
+        # frozen_string_literal: true
+        if last && check_diagonal_right_line(current, index, i) && check_current(current)
+          @winner_token = current
+          @winner = true
         end
         i += 1
       end
     end
+  end
+
+  def check_diagonal_right_line(current, index, i)
+    @board[index - 1][i - 1] == current && @board[index - 2][i - 2] == current && @board[index - 3][i - 3] == current
   end
 
   def check_diagonal_left
     @board.each_index do |index|
       i = 0
       while i < @board[index].length
-        if @board[index][i] == '⚪'
-          if control_diag_left_white(index, i) == true
-            @winner_token = '⚪'
-            return @winner = true
-          end
-        end
-        if @board[index][i] == '⚫'
-          if control_diag_left_black(index, i) == true
-            @winner_token = '⚫'
-            return @winner = true
-          end
+        current = board[index][i]
+        last = @board[index - 3][i + 3] unless @board[index - 3][i + 3].nil?
+        # frozen_string_literal: true
+        if last && check_diagonal_left_line(current, index, i) && check_current(current)
+          @winner_token = current
+          @winner = true
         end
         i += 1
       end
     end
   end
 
+  def check_diagonal_left_line(current, index, i)
+    @board[index - 1][i + 1] == current && @board[index - 2][i + 2] == current && @board[index - 3][i + 3] == current
+  end
+
+  def check_current(current)
+    !current.nil? && current != '  '
+  end
+
   def showboard
     puts '--------------------'
-    board.each do |row|
-      puts "#{row} \n"
-    end
+    board.each { |row| puts "#{row} \n" }
   end
 end

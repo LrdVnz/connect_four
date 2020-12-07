@@ -19,24 +19,26 @@ describe Game do
     subject(:game_startgame) { described_class.new }
     let(:tokens) { { 'black' => '⚫', 'white' => '⚪' } }
 
-    context 'when winner is true and there is a winner token'
+    context 'when winner is true and there is a winner token' do
+      before do
+        welcome_message = 'Welcome to Connect Four !'
+        show_message = 'This is your board.'
+        choose_sign_message = "put 1 for #{tokens['black']}, 2 for #{tokens['white']}"
+        allow(game_startgame).to receive(:puts).with(welcome_message)
+        allow(game_startgame).to receive(:puts).with(show_message)
+        allow(game_startgame).to receive(:puts).with(choose_sign_message)
+        allow(game_startgame).to receive_message_chain(:choose_sign)
+        allow(game_startgame).to receive(:showboard)
+        allow(game_startgame).to receive(:put_sign)
+      end
 
-    before do
-      welcome_message = 'Welcome to Connect Four !'
-      show_message = 'This is your board.'
-      choose_sign_message = "put 1 for #{tokens['black']}, 2 for #{tokens['white']}"
-      allow(game_startgame).to receive(:puts).exactly(3).times
-      allow(game_startgame).to receive_message_chain(:choose_sign)
-      allow(game_startgame).to receive(:showboard)
-      allow(game_startgame).to receive(:put_sign)
-    end
-
-    it 'stops and shows winning message' do
-      game_startgame.winner_token = '⚪'
-      win_message = "#{game_startgame.winner_token} WINS!"
-      game_startgame.winner = true
-      expect(game_startgame).to receive(:puts).with(win_message)
-      game_startgame.startgame
+      it 'stops and shows winning message' do
+        game_startgame.winner_token = '⚪'
+        win_message = "#{game_startgame.winner_token} WINS!"
+        game_startgame.winner = true
+        expect(game_startgame).to receive(:puts).with(win_message)
+        game_startgame.startgame
+      end
     end
   end
 
